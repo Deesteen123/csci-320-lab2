@@ -23,37 +23,14 @@ char* ipc_create(int size){
     int fd;
     /* pointer to shared memory obect */
     char* ptr;
-    
 
-    // TODO: create the shared memory object called lab2
-    fd = shm_open(SHARED_MEM_NAME, O_CREAT | O_RDWR, 0666);
-    if (fd==-1) {
-        perror("shm_open");
-        exit(1);
-    }
-
-
+     // TODO: create the shared memory object called lab2
+    fd = shm_open("lab2",O_CREAT | O_RDWR,0666);
     // TODO: configure the size of the shared memory object 
-    if (ftruncate(fd, size) == -1) {
-        perror("ftruncate");
-        exit(1);
-    }
-
-
+    ftruncate(fd, size);
     // TODO: memory map the shared memory object */
-    ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-    if (ptr == MAP_FAILED) {
-        perror("mmap");
-        exit(1);
-    }
-
-    close(fd); // Close the file descriptor
-
+    ptr = mmap(0,size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
     return ptr;
-}
-
-double ipc_read(void* shared_memory) {
-    return *((double*)shared_memory);
 }
 
 
@@ -66,3 +43,4 @@ double ipc_read(void* shared_memory) {
 void ipc_close(){
     shm_unlink("lab2");
 }
+	
